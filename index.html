@@ -3,110 +3,82 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Junye Pan's personal website, featuring project writeups, technical notes, and contact information.">
-  <title>Junye Pan | CS Student</title>
+  <meta name="description" content="Junye Pan's personal website with project writeups, technical notes, and contact information.">
+  <title>Junye Pan</title>
   <link rel="stylesheet" href="assets/site.css">
 </head>
 <body>
-  <header class="site-header">
-    <a class="brand" href="index.html">Junye Pan</a>
-    <nav class="nav-links" aria-label="Primary navigation">
-      <a href="#about">About</a>
+  <div class="page">
+    <header class="site-header">
+      <a href="index.html">Home</a>
       <a href="#posts">Posts</a>
       <a href="#contact">Contact</a>
-    </nav>
-  </header>
+    </header>
 
-  <main>
-    <section class="intro" id="about">
-      <div class="intro-copy">
-        <p class="eyebrow">Computer Science Student</p>
-        <h1>Hi, I'm Junye Pan.</h1>
-        <p class="lead">
-          I am a computer science student interested in software engineering, data systems, and practical product development.
-          This site collects my project experience, technical notes, and recruiting information in one place.
+    <main>
+      <section class="profile" id="about">
+        <div class="profile-text">
+          <h1>Junye Pan</h1>
+          <p class="role">Computer Science Student</p>
+          <p>
+            Email:
+            <a href="mailto:junyep2@illinois.edu">junyep2@illinois.edu</a>
+            &nbsp;|&nbsp;
+            GitHub:
+            <a href="https://github.com/Junye-Pan" target="_blank" rel="noreferrer">Junye-Pan</a>
+          </p>
+          <p>
+            I am a computer science student interested in software engineering, data systems,
+            and practical product development. This website collects my project writeups and
+            technical notes in a concise format.
+          </p>
+        </div>
+
+        <img class="portrait" src="assets/profile.jpg" alt="Portrait of Junye Pan">
+      </section>
+
+      <section>
+        <h2>Interests</h2>
+        <ul>
+          <li>Software engineering and full-stack web development</li>
+          <li>Data systems, data analysis, and applied machine learning</li>
+          <li>Developer tools, automation, and practical engineering workflows</li>
+        </ul>
+      </section>
+
+      <section id="posts">
+        <h2>Project Writeups</h2>
+        <p>
+          The following pages are placeholders for project-based blog posts. Each post is meant
+          to summarize the motivation, implementation, technical stack, results, and reflections.
         </p>
 
-        <ul class="intro-facts" aria-label="Profile highlights">
+        <ul class="post-list">
           <li>
-            <span>Focus</span>
-            <strong>Software Engineering</strong>
+            <a href="posts/project-01.html">Course Planner Web App</a>
+            <span>Full-stack web project covering authentication, data display, search, filtering, and backend API design.</span>
           </li>
           <li>
-            <span>Also Exploring</span>
-            <strong>Data Systems</strong>
+            <a href="posts/project-02.html">Data Analysis Project</a>
+            <span>Data or machine learning project covering data cleaning, feature engineering, model evaluation, and interpretation.</span>
           </li>
           <li>
-            <span>Based at</span>
-            <strong>UIUC</strong>
+            <a href="posts/project-03.html">Developer Tooling Project</a>
+            <span>Systems or tooling project covering automation, command-line interfaces, error handling, and engineering tradeoffs.</span>
           </li>
         </ul>
+      </section>
 
-        <div class="intro-actions" aria-label="Featured links">
-          <a class="button primary" href="#posts">View Posts</a>
-          <a class="button secondary" href="mailto:junyep2@illinois.edu">Contact Me</a>
-          <a class="button secondary" href="https://github.com/Junye-Pan" target="_blank" rel="noreferrer">GitHub</a>
-        </div>
-      </div>
-
-      <figure class="profile">
-        <img src="assets/profile.jpg" alt="Portrait of Junye Pan" onerror="this.hidden = true; this.nextElementSibling.hidden = false;">
-        <div class="profile-placeholder" hidden aria-label="Profile photo placeholder">
-          <span>JP</span>
-        </div>
-      </figure>
-    </section>
-
-    <section class="section-heading" id="posts" aria-labelledby="posts-title">
-      <p class="eyebrow">Project Blog</p>
-      <h2 id="posts-title">Project Writeups</h2>
-      <p>
-        I organize each project as a short writeup covering the context, technical stack, implementation details,
-        outcomes, and lessons learned. These entries currently outline three representative directions:
-        web development, data work, and developer tooling.
-      </p>
-    </section>
-
-    <section class="project-grid" aria-label="Post list">
-      <a class="project-card" href="posts/project-01.html" aria-label="Open Course Planner Web App writeup">
-        <div>
-          <p class="project-meta">Full-stack / Web</p>
-          <h3>Course Planner Web App</h3>
-          <p>A full-stack web project entry for highlighting authentication, data display, search and filtering, and backend API design.</p>
-        </div>
-        <span class="post-link">Open post</span>
-      </a>
-
-      <a class="project-card" href="posts/project-02.html" aria-label="Open Data Analysis Project writeup">
-        <div>
-          <p class="project-meta">Data / ML</p>
-          <h3>Data Analysis Project</h3>
-          <p>A data analysis or machine learning project entry for showing data cleaning, feature engineering, model evaluation, and interpretation.</p>
-        </div>
-        <span class="post-link">Open post</span>
-      </a>
-
-      <a class="project-card" href="posts/project-03.html" aria-label="Open Developer Tooling Project writeup">
-        <div>
-          <p class="project-meta">Systems / Tooling</p>
-          <h3>Developer Tooling Project</h3>
-          <p>A systems or developer tooling project entry for demonstrating automation, command-line tools, error handling, and engineering judgment.</p>
-        </div>
-        <span class="post-link">Open post</span>
-      </a>
-    </section>
-
-    <section class="contact" id="contact" aria-labelledby="contact-title">
-      <div>
-        <p class="eyebrow">Contact</p>
-        <h2 id="contact-title">Get in Touch</h2>
-      </div>
-      <div class="contact-links">
-        <a href="mailto:junyep2@illinois.edu">junyep2@illinois.edu</a>
-        <a href="https://github.com/Junye-Pan" target="_blank" rel="noreferrer">github.com/Junye-Pan</a>
-        <a href="#" aria-label="Resume link placeholder">Resume link coming soon</a>
-      </div>
-    </section>
-  </main>
+      <section id="contact">
+        <h2>Contact</h2>
+        <p>
+          You can reach me at
+          <a href="mailto:junyep2@illinois.edu">junyep2@illinois.edu</a>.
+          My GitHub profile is
+          <a href="https://github.com/Junye-Pan" target="_blank" rel="noreferrer">github.com/Junye-Pan</a>.
+        </p>
+      </section>
+    </main>
+  </div>
 </body>
 </html>
