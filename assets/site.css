@@ -7,6 +7,10 @@ body {
   line-height: 1.55;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 .page {
   max-width: 860px;
   margin: 0 auto;
@@ -20,6 +24,11 @@ a {
 
 a:hover {
   text-decoration: underline;
+}
+
+a:focus {
+  outline: 2px solid #0645ad;
+  outline-offset: 2px;
 }
 
 .site-header {
@@ -68,6 +77,7 @@ h1 {
 
 section {
   margin-top: 28px;
+  scroll-margin-top: 18px;
 }
 
 h2 {
@@ -76,6 +86,11 @@ h2 {
   border-bottom: 1px solid #ddd;
   font-size: 21px;
   font-weight: 600;
+}
+
+section:target h2,
+.profile:target h1 {
+  background: #fff4b8;
 }
 
 p {
