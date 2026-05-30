@@ -27,6 +27,11 @@ a:focus {
   outline-offset: 2px;
 }
 
+img {
+  max-width: 100%;
+  height: auto;
+}
+
 .site-header {
   margin-bottom: 36px;
   padding-bottom: 10px;
