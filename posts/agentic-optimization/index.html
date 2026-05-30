@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A project writeup on Agentic Optimization, a framework for autonomous coding-agent search with server-owned benchmark authority.">
+  <title>A Framework for Agentic Optimization | Junye Pan</title>
+  <link rel="stylesheet" href="../../assets/site.css">
+</head>
+<body>
+  <div class="page">
+    <header class="site-header">
+      <a href="../../index.html">Home</a>
+    </header>
+
+    <main class="post article-post">
+      <h1>A Framework for Agentic Optimization</h1>
+      <div class="post-actions" aria-label="Project links">
+        <a href="assets/report.pdf" target="_blank" rel="noreferrer">[report]</a>
+        <a href="https://github.com/Junye-Pan/AgenticOptimization.git" target="_blank" rel="noreferrer">[code]</a>
+      </div>
+
+      <p>
+        Large language models are becoming increasingly capable at writing code,
+        debugging programs, and reasoning over complex software systems. But in many
+        automated discovery pipelines, these models still operate inside rigid search
+        loops designed by humans. The controller selects what to try next, decides
+        which prior candidates to reuse, constructs the prompt, and manages the
+        evaluation process. The model contributes code, but the search strategy
+        largely remains outside the agent.
+      </p>
+
+      <p>
+        Our work explores a different question: what happens if the coding agent
+        itself is allowed to conduct the search?
+      </p>
+
+      <p>
+        We introduce Agentic Optimization, a server-first framework for autonomous
+        coding-agent search. The central idea is to move inner-loop optimization
+        behavior into the agent while keeping benchmark authority under server
+        control. In other words, the agent can inspect prior attempts, run local
+        experiments, create tools, compare results, publish findings, and decide when
+        to submit a candidate. But the server still owns the task definition, hidden
+        evaluator, official scoring, artifact snapshots, budget control, and
+        leaderboard updates.
+      </p>
+
+      <section>
+        <h2>Agent-Owned Search, Server-Owned Authority</h2>
+        <p>
+          This separation is important. If the controller dictates every search step,
+          it can suppress the very behaviors that modern coding agents are beginning
+          to show: opportunistic debugging, selective retrieval, local experiment
+          design, reuse of prior discoveries, and adaptation across sessions. At the
+          same time, a scientific benchmark cannot simply hand over its hidden tests
+          or scoring logic to the agent. Agentic Optimization is designed around this
+          boundary: agent-owned search, server-owned authority.
+        </p>
+
+        <p>
+          The framework exposes two task-agnostic evaluation surfaces. A public verify
+          interface gives the agent fast, safe feedback about whether a candidate
+          satisfies the task contract. A separate submit interface snapshots the
+          candidate and runs authoritative evaluation under server control. The agent
+          can use verification during search, but official claims always come from
+          immutable submitted artifacts.
+        </p>
+
+        <p>
+          The system also stores optimization history as semantic resources rather
+          than as an ever-growing chat transcript. Prior candidates, evaluations,
+          incumbents, findings, traces, environments, and shared tools are all
+          recorded by the control plane. This allows future agents to retrieve useful
+          state without relying on brittle workspace conventions or overloaded
+          conversation history.
+        </p>
+      </section>
+
+      <section>
+        <h2>Experiments</h2>
+        <p>
+          We evaluated the framework on three tasks: circle packing, end-to-end LLM
+          serving optimization, and decode-attention kernel optimization.
+        </p>
+
+        <h3>Circle Packing</h3>
+        <p>
+          For the case of packing 26 circles into a unit square, agents used verifier
+          feedback, official submissions, shared tools, and persistent findings to
+          improve candidate layouts. Both the linear and multi-agent runs exceeded
+          previously reported CP26 scores, reaching 2.63598356975 and 2.63598366253,
+          respectively. The multi-agent run produced the best result by allowing
+          different workers to explore and refine separate directions while sharing
+          durable state through the framework.
+        </p>
+
+        <div class="table-wrap" role="region" aria-label="Circle packing result table" tabindex="0">
+          <table class="results-table">
+            <caption>
+              Circle packing results for n = 26. Higher is better. Prior scores are
+              reported with the precision used in the corresponding papers; our
+              entries are official strict-safe scores from the evaluator.
+            </caption>
+            <thead>
+              <tr>
+                <th scope="col">Method</th>
+                <th scope="col">Score</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>AlphaEvolve</td>
+                <td>2.635862</td>
+              </tr>
+              <tr>
+                <td>ShinkaEvolve</td>
+                <td>2.635982</td>
+              </tr>
+              <tr>
+                <td>TTT-Discover</td>
+                <td>2.635983</td>
+              </tr>
+              <tr>
+                <td>Agentic Optimization (linear)</td>
+                <td>2.63598356975</td>
+              </tr>
+              <tr>
+                <td>Agentic Optimization (multi-agent)</td>
+                <td><strong>2.63598366253</strong></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <figure class="post-figure">
+          <img src="assets/images/circle-packing-score-progress.png" alt="Score progress for CP26 circle packing experiments comparing linear and multi-agent runs.">
+          <figcaption>
+            Score progress for the CP26 circle packing task. The multi-agent run
+            reaches the strongest final score while both runs exceed the prior
+            reference lines shown in the plot.
+          </figcaption>
+        </figure>
+
+        <h3>End-to-End LLM Serving</h3>
+        <p>
+          The second task tested a harder systems setting: end-to-end optimization of
+          Qwen3-1.7B serving with SGLang on an RTX 4090. Here, agents generated
+          plausible kernel and backend changes, and many candidates passed public
+          verification. But these changes did not reliably translate into official
+          serving gains. Hidden hard-gate workloads exposed mismatches in text output,
+          token IDs, logprobs, or top-logprobs. Local microbenchmarks were also poor
+          predictors of full-server performance once batching, sampling, and
+          prefill/decode tradeoffs were included.
+        </p>
+
+        <figure class="post-figure">
+          <img src="assets/images/llm-serving-score-progress.png" alt="Submit score progress for Qwen3-1.7B SGLang serving optimization.">
+          <figcaption>
+            Official submit scores for the full SGLang serving task. Several attempts
+            passed local checks, but the hidden serving objective remained unstable
+            and weakly aligned with local speedups.
+          </figcaption>
+        </figure>
+
+        <p>
+          This negative result is informative. It shows that agentic search is not
+          enough by itself when the public feedback signal is weakly aligned with the
+          hidden objective. In a large serving stack, a locally faster kernel can still
+          make the full system slower or invalid. The framework made this failure mode
+          visible rather than hiding it behind aggregate benchmark numbers.
+        </p>
+
+        <h3>Decode-Attention Kernel Optimization</h3>
+        <p>
+          To isolate the issue, we then narrowed the optimization surface to a
+          decode-attention microkernel. This task removed most of the confounding
+          factors from full serving and focused on a deterministic tensor operator
+          with local correctness and timing feedback. Under this cleaner feedback
+          loop, the agent achieved a 2.063&times; operator-level speedup over the
+          official SGLang decode-attention implementation on the same RTX 4090 target.
+        </p>
+
+        <figure class="post-figure">
+          <img src="assets/images/decode-attention-score-progress.png" alt="Score progress for Qwen3-1.7B decode-attention kernel optimization.">
+          <figcaption>
+            Decode-attention optimization produced a much cleaner improvement curve,
+            ending at a 2.063&times; operator-level speedup over the SGLang baseline.
+          </figcaption>
+        </figure>
+      </section>
+
+      <section>
+        <h2>Takeaways</h2>
+        <p>
+          Across these experiments, the main lesson is that coding agents can perform
+          meaningful autonomous search when the candidate surface, verifier feedback,
+          and official score are closely aligned. In compact mathematical or
+          operator-level optimization tasks, they can iterate, diagnose failures,
+          reuse tools, and steadily improve results. In large integrated systems,
+          however, current agents still struggle when official outcomes depend on
+          sparse, expensive, or brittle feedback.
+        </p>
+
+        <p>
+          Agentic Optimization is not a new mutation heuristic or a fixed evolutionary
+          algorithm. It is a systems substrate for studying and amplifying autonomous
+          search behavior in coding agents. By giving agents more responsibility for
+          the search process while preserving server-side experimental authority, the
+          framework offers a practical path toward more reliable automated discovery
+          systems.
+        </p>
+
+        <p>
+          Future work should focus on better public surrogates for hidden evaluators,
+          more robust correctness contracts for serving-level optimization, and task
+          decompositions that preserve realistic objectives while giving agents
+          feedback signals sharp enough for long-horizon search.
+        </p>
+      </section>
+    </main>
+  </div>
+</body>
+</html>
